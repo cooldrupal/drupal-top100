@@ -1,0 +1,9 @@
+uuid: f9c6305d-b4d6-4110-a134-7b4a74e914b3
+langcode: en
+status: true
+dependencies: {  }
+name: Countries
+vid: countries
+description: "Organization's countries"
+weight: 0
+new_revision: false

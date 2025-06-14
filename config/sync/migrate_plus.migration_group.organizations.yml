@@ -1,0 +1,10 @@
+uuid: 74f7a3d8-8a82-46d9-988b-29701a75dcc6
+langcode: en
+status: true
+dependencies: {  }
+id: organizations
+label: Organizations
+description: ''
+source_type: ''
+module: null
+shared_configuration: null
