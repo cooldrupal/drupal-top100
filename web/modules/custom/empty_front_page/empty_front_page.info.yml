@@ -1,0 +1,5 @@
+name: Empty Front Page
+type: module
+description: 'Sets the front page to an empty page'
+package: Custom
+core_version_requirement: ^9.3 || ^10 || ^11

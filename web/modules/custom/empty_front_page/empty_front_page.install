@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for Empty Front Page.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function empty_front_page_install() {
+  Drupal::configFactory()->getEditable('system.site')->set('page.front', '/empty-front-page')->save();
+}

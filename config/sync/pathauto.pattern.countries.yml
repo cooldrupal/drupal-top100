@@ -1,0 +1,22 @@
+uuid: 13273100-9e9d-436b-b54e-5fcc2a85ba33
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: countries
+label: Countries
+type: 'canonical_entities:taxonomy_term'
+pattern: 'countries/[term:name]'
+selection_criteria:
+  12d5a008-2e3c-4b04-aa53-7de08301add3:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    uuid: 12d5a008-2e3c-4b04-aa53-7de08301add3
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      countries: countries
+selection_logic: and
+weight: -5
+relationships: {  }

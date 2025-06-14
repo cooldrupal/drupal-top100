@@ -1,0 +1,22 @@
+uuid: 72c49206-fb36-4361-b3b1-c65beeefcadd
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vani
+_core:
+  default_config_hash: cKJex5Uorm1TxwCjWyrhCpoj35radobSfy6Ub1zGBoo
+id: vani_content
+theme: vani
+region: content
+weight: -5
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

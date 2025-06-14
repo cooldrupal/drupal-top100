@@ -1,0 +1,29 @@
+uuid: 00f96c55-76e1-4273-954e-3326009bf30b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.countries
+  module:
+    - system
+    - views
+  theme:
+    - vani
+id: vani_views_block__countries_block_1
+theme: vani
+region: content_top
+weight: -5
+provider: null
+plugin: 'views_block:countries-block_1'
+settings:
+  id: 'views_block:countries-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

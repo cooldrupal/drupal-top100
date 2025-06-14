@@ -1,0 +1,29 @@
+uuid: d40f8413-3da6-461f-b9f3-12ec9fd81a7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.organizations
+  module:
+    - system
+    - views
+  theme:
+    - vani
+id: vani_views_block__organizations_block_1
+theme: vani
+region: content_top
+weight: -6
+provider: null
+plugin: 'views_block:organizations-block_1'
+settings:
+  id: 'views_block:organizations-block_1'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

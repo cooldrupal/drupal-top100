@@ -1,0 +1,18 @@
+{
+  "name": "drupal/empty_front_page",
+  "description": "Remove default content from the front page",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+      {
+          "name": "Greg Boggs (greg-boggs)",
+          "homepage": "https://www.drupal.org/u/greg-boggs",
+          "role": "Co-maintainer"
+      }
+  ],
+  "homepage": "https://www.drupal.org/project/empty_front_page",
+  "support": {
+      "issues": "https://www.drupal.org/project/issues/empty_front_page",
+      "source": "https://git.drupalcode.org/project/empty_front_page"
+  }
+}

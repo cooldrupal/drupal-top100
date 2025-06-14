@@ -1,0 +1,30 @@
+uuid: becf0b58-c708-42f9-8ff7-3c15e881b9f5
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:6c306bcc-cc55-459a-9243-1ec7dc796669'
+  module:
+    - block_content
+    - system
+  theme:
+    - vani
+id: vani_aboutdrupalorganizations
+theme: vani
+region: content_top
+weight: -7
+provider: null
+plugin: 'block_content:6c306bcc-cc55-459a-9243-1ec7dc796669'
+settings:
+  id: 'block_content:6c306bcc-cc55-459a-9243-1ec7dc796669'
+  label: 'About drupal organizations'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'
