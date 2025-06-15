@@ -9,10 +9,14 @@ module:
   breakpoint: 0
   ckeditor5: 0
   config: 0
+  consumers: 0
   contact: 0
   contextual: 0
   datetime: 0
   dblog: 0
+  decoupled_kit: 0
+  decoupled_kit_block: 0
+  decoupled_router: 0
   dynamic_page_cache: 0
   easy_breadcrumb: 0
   editor: 0
@@ -22,17 +26,26 @@ module:
   file: 0
   filter: 0
   image: 0
+  jsonapi: 0
+  jsonapi_menu_items: 0
+  jsonapi_resources: 0
+  jsonapi_views: 0
   link: 0
   menu_link_content: 0
   menu_ui: 0
   mysql: 0
+  next: 0
+  next_jsonapi: 0
   node: 0
   options: 0
   page_cache: 0
   path: 0
   path_alias: 0
   search: 0
+  serialization: 0
   shortcut: 0
+  simple_oauth: 0
+  subrequests: 0
   system: 0
   taxonomy: 0
   text: 0
