@@ -22,6 +22,7 @@
         "drupal/core-project-message": "^11.1",
         "drupal/core-recommended": "^11.1",
         "drupal/decoupled_kit": "^2.0",
+        "drupal/ds": "^3.30",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/jsonapi_menu_items": "^1.2",
         "drupal/jsonapi_views": "^1.1",
@@ -29,6 +30,7 @@
         "drupal/migrate_tools": "^6.0",
         "drupal/next": "^2.0",
         "drupal/pathauto": "^1.13",
+        "drupal/svg_image_field": "^2.3",
         "drupal/vani": "^11.0",
         "drupal/views_infinite_scroll": "^2.0",
         "drush/drush": "^13.6"

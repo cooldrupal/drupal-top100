@@ -1,24 +1,24 @@
-uuid: d40f8413-3da6-461f-b9f3-12ec9fd81a7b
+uuid: 2ba9dc57-6176-4ff8-b7af-7e6240865c80
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.organizations
+    - views.view.badges
   module:
     - system
     - views
   theme:
     - vani
-id: vani_views_block__organizations_block_1
+id: vani_views_block__badges_block_1
 theme: vani
 region: content_top
-weight: -7
+weight: -6
 provider: null
-plugin: 'views_block:organizations-block_1'
+plugin: 'views_block:badges-block_1'
 settings:
-  id: 'views_block:organizations-block_1'
+  id: 'views_block:badges-block_1'
   label: ''
-  label_display: '0'
+  label_display: visible
   provider: views
   views_label: ''
   items_per_page: none

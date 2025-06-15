@@ -12,7 +12,7 @@ dependencies:
 id: vani_aboutdrupalorganizations
 theme: vani
 region: content_top
-weight: -7
+weight: -8
 provider: null
 plugin: 'block_content:6c306bcc-cc55-459a-9243-1ec7dc796669'
 settings:

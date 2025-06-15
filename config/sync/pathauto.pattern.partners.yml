@@ -1,0 +1,22 @@
+uuid: ea11d148-1f3e-491e-af37-6d93088fa531
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: partners
+label: Partners
+type: 'canonical_entities:taxonomy_term'
+pattern: 'badges/[term:name]'
+selection_criteria:
+  04761aa5-24a0-43c9-b04b-503003a325a8:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    uuid: 04761aa5-24a0-43c9-b04b-503003a325a8
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      partner: partner
+selection_logic: and
+weight: -5
+relationships: {  }

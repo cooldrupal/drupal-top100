@@ -1,0 +1,55 @@
+uuid: 4a3d84ae-1283-4bf9-bcda-07ba3a2780c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.partner.field_logo
+    - taxonomy.vocabulary.partner
+  module:
+    - path
+    - svg_image_field
+    - text
+id: taxonomy_term.partner.default
+targetEntityType: taxonomy_term
+bundle: partner
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_logo:
+    type: svg_image_field_widget
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_max_width: 300
+      preview_image_max_height: 300
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden: {  }

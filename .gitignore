@@ -103,5 +103,6 @@
 web/themes/custom/*/node_modules
 /web/robots.txt
 /migrate/
+/next/
 
 .DS_Store

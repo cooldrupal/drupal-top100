@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.organization.field_career
     - field.field.node.organization.field_countries
     - field.field.node.organization.field_logo
+    - field.field.node.organization.field_partner
     - field.field.node.organization.field_teaser
     - field.field.node.organization.field_website
     - node.type.organization
@@ -28,7 +29,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 6
     region: content
   field_countries:
     type: entity_reference_label
@@ -36,7 +37,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   field_logo:
     type: image
@@ -48,6 +49,15 @@ content:
         attribute: lazy
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_partner:
+    type: entity_reference_entity_view
+    label: inline
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_teaser:
     type: basic_string
@@ -66,7 +76,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
   links:
     settings: {  }

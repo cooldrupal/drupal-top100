@@ -1,0 +1,29 @@
+uuid: 3a3f6288-83ba-46bb-bb33-6f751e3d885e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_partner
+    - node.type.organization
+    - taxonomy.vocabulary.partner
+id: node.organization.field_partner
+field_name: field_partner
+entity_type: node
+bundle: organization
+label: Badge
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      partner: partner
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

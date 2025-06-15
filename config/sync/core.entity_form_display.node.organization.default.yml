@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.organization.field_career
     - field.field.node.organization.field_countries
     - field.field.node.organization.field_logo
+    - field.field.node.organization.field_partner
     - field.field.node.organization.field_teaser
     - field.field.node.organization.field_website
     - image.style.thumbnail
@@ -50,6 +51,12 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_partner:
+    type: options_buttons
+    weight: 127
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_teaser:
     type: string_textarea

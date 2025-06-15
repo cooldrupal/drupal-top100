@@ -1,0 +1,33 @@
+uuid: 560cf244-17d1-41c7-a29b-2542028c0e8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.organizations
+  module:
+    - node
+    - views
+  theme:
+    - vani
+id: vani_views_block__organizations_block_2
+theme: vani
+region: sidebar_second
+weight: 0
+provider: null
+plugin: 'views_block:organizations-block_2'
+settings:
+  id: 'views_block:organizations-block_2'
+  label: ''
+  label_display: visible
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      organization: organization

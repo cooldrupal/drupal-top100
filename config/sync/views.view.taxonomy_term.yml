@@ -8,6 +8,7 @@ dependencies:
     - node
     - taxonomy
     - user
+    - views_infinite_scroll
 _core:
   default_config_hash: KejdxDJQmx8SaO-t83OVekLw6ar4ldjmsJMGcotGxnQ
 id: taxonomy_term
@@ -26,7 +27,7 @@ display:
     display_options:
       fields: {  }
       pager:
-        type: mini
+        type: infinite_scroll
         options:
           offset: 0
           pagination_heading_level: h4
@@ -44,6 +45,10 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          views_infinite_scroll:
+            button_text: 'Load More'
+            automatically_load_content: false
+            initially_load_all_pages: false
       exposed_form:
         type: basic
         options:
@@ -307,7 +312,9 @@ display:
       query:
         type: views_query
         options: {  }
-      display_extenders: {  }
+      display_extenders:
+        jsonapi_views:
+          enabled: true
       path: taxonomy/term/%
     cache_metadata:
       max-age: -1

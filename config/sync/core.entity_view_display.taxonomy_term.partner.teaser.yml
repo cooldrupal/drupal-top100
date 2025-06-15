@@ -1,0 +1,47 @@
+uuid: 7f5fbe33-d000-40eb-9608-2364d22d1ba4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.partner.field_logo
+    - taxonomy.vocabulary.partner
+  module:
+    - ds
+    - svg_image_field
+third_party_settings:
+  ds:
+    layout:
+      id: layout_onecol
+      library: layout_discovery/onecol
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        label: ''
+    regions:
+      content:
+        - field_logo
+id: taxonomy_term.partner.teaser
+targetEntityType: taxonomy_term
+bundle: partner
+mode: teaser
+content:
+  field_logo:
+    type: svg_image_field_formatter
+    label: hidden
+    settings:
+      inline: false
+      apply_dimensions: true
+      width: 100
+      height: 100
+      enable_alt: true
+      enable_title: true
+      link: content
+      force_fill: false
+      sanitize: true
+      sanitize_remote: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  description: true

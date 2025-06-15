@@ -1,0 +1,9 @@
+uuid: f60a74e8-0808-4957-b20d-41792f93b0b2
+langcode: en
+status: true
+dependencies: {  }
+name: Partner
+vid: partner
+description: 'Drupal Certified  Partner'
+weight: 0
+new_revision: false
