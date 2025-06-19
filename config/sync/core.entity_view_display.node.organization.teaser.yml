@@ -14,7 +14,6 @@ dependencies:
   module:
     - ds
     - image
-    - link
     - user
 third_party_settings:
   ds:
@@ -29,35 +28,11 @@ third_party_settings:
       content:
         - field_logo
         - field_teaser
-        - field_partner
-        - field_website
-        - field_career
-        - field_countries
 id: node.organization.teaser
 targetEntityType: node
 bundle: organization
 mode: teaser
 content:
-  field_career:
-    type: link
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  field_countries:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_logo:
     type: image
     label: hidden
@@ -69,14 +44,6 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_partner:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 2
-    region: content
   field_teaser:
     type: basic_string
     label: hidden
@@ -84,17 +51,9 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_website:
-    type: link
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 3
-    region: content
 hidden:
+  field_career: true
+  field_countries: true
+  field_partner: true
+  field_website: true
   links: true

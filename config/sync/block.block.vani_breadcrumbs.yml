@@ -19,4 +19,8 @@ settings:
   label: Breadcrumbs
   label_display: '0'
   provider: system
+  breadcrumb:
+    -
+      text: Home
+      url: /
 visibility: {  }
