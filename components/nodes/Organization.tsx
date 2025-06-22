@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { absoluteUrl } from "@/lib/utils"
+import { absoluteUrl, isEmpty } from "@/lib/utils"
 import type { DrupalNode } from "next-drupal"
 import { Link } from "@/components/navigation/Link"
 
@@ -32,7 +32,7 @@ export function Organization({ node, ...props }: OrganizationProps) {
           className="mt-6 font-serif text-xl leading-loose prose"
         />
       )}
-      {node.field_partner && (
+      {!isEmpty(node.field_partner) && (
         <>
         <div>Badge:</div>
         <Link href={node.field_partner.path.alias}>
@@ -49,9 +49,9 @@ export function Organization({ node, ...props }: OrganizationProps) {
         </Link>
         </>
       )}
-      {node.field_countries && (
+      {!isEmpty(node.field_countries) && (
         <>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
             <div>Countries:</div>
             {node.field_countries.map((country: any) => (
               <span key={country.id}>
@@ -63,9 +63,9 @@ export function Organization({ node, ...props }: OrganizationProps) {
           </div>
         </>
       )}
-      {node.field_website?.uri && (
+      {!isEmpty(node.field_website?.uri) && (
         <>
-        <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
           <div>Website:</div>
           <Link href={node.field_website.uri}>
             <span className="mb-2 font-light">{node.field_website.uri}</span>
@@ -73,9 +73,9 @@ export function Organization({ node, ...props }: OrganizationProps) {
         </div>
         </>
       )}
-      {node.field_career?.uri && (
+      {!isEmpty(node.field_career?.uri) && (
         <>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
             <div>Career:</div>
             <Link href={node.field_career.uri}>
               <span className="mb-2 font-light">{node.field_career.uri}</span>
