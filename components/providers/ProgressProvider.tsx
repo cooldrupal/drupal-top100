@@ -1,42 +1,47 @@
 'use client'
 
 import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-// Конфигурация NProgress
 NProgress.configure({ showSpinner: false })
 
 function NavigationProgress() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Завершаем прогресс при изменении маршрута
     NProgress.done()
-  }, [pathname, searchParams])
+  }, [pathname])
 
   useEffect(() => {
-    // Перехватываем клики по ссылкам для запуска прогресса
+    const handlePopState = () => {
+      NProgress.start()
+    }
+
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       const link = target.closest('a')
 
-      if (link && link.href && !link.href.startsWith('mailto:') && !link.href.startsWith('tel:')) {
-        const url = new URL(link.href)
-        const currentUrl = new URL(window.location.href)
+      if (link && link.href && !link.target) {
+        try {
+          const url = new URL(link.href)
+          const currentUrl = new URL(window.location.href)
 
-        // Запускаем прогресс только для внутренних ссылок
-        if (url.origin === currentUrl.origin && url.pathname !== currentUrl.pathname) {
-          NProgress.start()
+          if (url.origin === currentUrl.origin && url.pathname !== currentUrl.pathname) {
+            NProgress.start()
+          }
+        } catch (error) {
+
         }
       }
     }
 
+    window.addEventListener('popstate', handlePopState)
     document.addEventListener('click', handleLinkClick)
 
     return () => {
+      window.removeEventListener('popstate', handlePopState)
       document.removeEventListener('click', handleLinkClick)
     }
   }, [])
