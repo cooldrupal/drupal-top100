@@ -17,7 +17,7 @@ export async function Menu({menu_id, container_class='', list_class='', item_cla
   const options = menusMap(id);
 
   return (
-    <div className="w-full sm:w-auto">
+    <div className="w-full sm:w-auto sm:ml-auto">
       <nav className={`menu_${id}`}>
         <ul className={options?.list_class}>
         {menu?.items?.map((item) => {
