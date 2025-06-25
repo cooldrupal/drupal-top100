@@ -86,20 +86,19 @@ export default async function NodePage(props: NodePageProps) {
       params: {
         'views-argument': [node.drupal_internal__tid]
       }
-     }
+    }
     view = await drupal.getView("taxonomy_term--page_1", options)
   }
 
   const blocks = await getBlocks(slug, ['sidebar_second', 'header', 'footer_top'],
     ['block_content', 'views'], { 'current_id': node.drupal_internal__nid }
   )
-  const menu = await getBlocks('/', ['primary_menu'], ['system'])
+  const menu = await getBlocks(slug, ['primary_menu'], ['system'])
 
   type BreadcrumbItem = { text: string; url: string };
   const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
-  if (breadcrumb) {
-    breadcrumb.push({ text: node.title ?? node.name, url: '' });
-  }
+  breadcrumb?.push({ text: node.title ?? node.name, url: '' });
+
 
   return (
     <>

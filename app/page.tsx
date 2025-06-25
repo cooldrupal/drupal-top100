@@ -5,8 +5,8 @@ import { Block } from "@/components/drupal/Block"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "NextJs for Drupal (Decoupled Kit)",
-  description: "A Next.js site powered by a Drupal backend (Decoupled Kit).",
+  title: "Drupal Top 100 sites",
+  description: "Drupal sites from drupal.org organizations",
 }
 
 export default async function Home() {

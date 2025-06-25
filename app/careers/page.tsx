@@ -13,20 +13,19 @@ const title = 'Careers'
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: title,
+    description: 'Careers page list',
   }
 }
 
 export default async function Careers(props: any) {
   const blocks = await getBlocks(slug, ['header', 'footer_top'])
-  const menu = await getBlocks('/', ['primary_menu'], ['system'])
+  const menu = await getBlocks(slug, ['primary_menu'], ['system'])
 
   const view = await drupal.getView("organizations--page_2")
 
   type BreadcrumbItem = { text: string; url: string };
   const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
-  if (breadcrumb) {
-    breadcrumb.push({ text: title, url: '' });
-  }
+  breadcrumb?.push({ text: title, url: '' });
 
   return (
     <>
