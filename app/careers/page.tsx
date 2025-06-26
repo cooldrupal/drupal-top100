@@ -6,6 +6,7 @@ import { Breadcrumb } from "@/components/drupal/Breadcrumb"
 import { getBlocks } from "@/lib/decoupled_kit"
 import { OrganizationCareer } from "@/components/nodes/OrganizationCareer"
 import type { Metadata } from "next"
+import { isEmpty } from "@/lib/utils"
 
 const slug = 'careers'
 const title = 'Careers'
@@ -34,15 +35,14 @@ export default async function Careers(props: any) {
       <main className="w-full">
         <h1 className="my-4 text-6xl font-black leading-tight text-center">{title}</h1>
         <Breadcrumb breadcrumb={breadcrumb} />
-        {
-          view?.results?.length &&
-            <ul className="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {view.results.map((row: any) => (
-              <li key={row.id}>
-                <OrganizationCareer node={row}/>
-              </li>
-            ))}
-            </ul>
+        {!isEmpty(view.results) &&
+          <ul className="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {view.results.map((row: any) => (
+            <li key={row.id}>
+              <OrganizationCareer node={row}/>
+            </li>
+          ))}
+          </ul>
         }
       </main>
     </div>

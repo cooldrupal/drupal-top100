@@ -7,6 +7,7 @@ import { getBlocks } from "@/lib/decoupled_kit"
 import { OrganizationTeaser } from "@/components/nodes/OrganizationTeaser"
 import type { Metadata } from "next"
 import { PagerMore } from "@/components/drupal/PagerMore"
+import { isEmpty } from "@/lib/utils"
 
 const slug = 'organizations'
 const title = 'Organizations'
@@ -54,19 +55,20 @@ export default async function Organizations(props: ViewPageProps) {
       <main className="w-full">
         <h1 className="my-4 text-6xl font-black leading-tight text-center">{title}</h1>
         <Breadcrumb breadcrumb={breadcrumb} />
-        {
-          view?.results?.length &&
-            <>
+        {!isEmpty(view.results) ? (
+          <>
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {view.results.map((row: any) => (
-              <li key={row.id}>
-                <OrganizationTeaser node={row}/>
-              </li>
-            ))}
+              {view.results.map((row: any) => (
+                <li key={row.id}>
+                  <OrganizationTeaser node={row} />
+                </li>
+              ))}
             </ul>
             <PagerMore url={nextPageUrl} />
-            </>
-        }
+          </>
+        ) : (
+          <PagerMore url={`/${slug}`} text="Go to top" />
+        )}
       </main>
     </div>
     <Footer blocks={blocks.footer_top} />
