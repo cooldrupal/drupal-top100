@@ -72,6 +72,9 @@ export default async function NodePage(props: NodePageProps) {
   const params = await props.params
   const { slug } = params
 
+  type BreadcrumbItem = { text: string; url: string };
+  const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
+
   let node
   try {
     node = await getNode(slug)
@@ -88,6 +91,8 @@ export default async function NodePage(props: NodePageProps) {
       }
     }
     view = await drupal.getView("taxonomy_term--page_1", options)
+
+    breadcrumb?.push({ text: 'Organizations', url: '/organizations' });
   }
 
   const blocks = await getBlocks(slug, ['sidebar_second', 'header', 'footer_top'],
@@ -95,10 +100,7 @@ export default async function NodePage(props: NodePageProps) {
   )
   const menu = await getBlocks(slug, ['primary_menu'], ['system'])
 
-  type BreadcrumbItem = { text: string; url: string };
-  const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
   breadcrumb?.push({ text: node.title ?? node.name, url: '' });
-
 
   return (
     <>
