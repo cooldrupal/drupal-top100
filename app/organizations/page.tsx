@@ -44,9 +44,7 @@ export default async function Organizations(props: ViewPageProps) {
   const blocks = await getBlocks(slug, ['header', 'footer_top'])
   const menu = await getBlocks(slug, ['primary_menu'], ['system'])
 
-  type BreadcrumbItem = { text: string; url: string };
-  const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
-  breadcrumb?.push({ text: title, url: '' });
+  const breadcrumb = await getBreadcrumb(slug, 'page_header', title);
 
   return (
     <>

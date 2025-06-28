@@ -21,13 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Careers(props: any) {
   const blocks = await getBlocks(slug, ['header', 'footer_top'])
   const menu = await getBlocks(slug, ['primary_menu'], ['system'])
-
   const view = await drupal.getView("organizations--page_2")
-
-  type BreadcrumbItem = { text: string; url: string };
-  const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
-  breadcrumb?.push({ text: title, url: '' });
-
+  const breadcrumb = await getBreadcrumb(slug, 'page_header', title);
   return (
     <>
     <Header blocks={blocks.header} menus={menu?.primary_menu} />

@@ -72,8 +72,7 @@ export default async function NodePage(props: NodePageProps) {
   const params = await props.params
   const { slug } = params
 
-  type BreadcrumbItem = { text: string; url: string };
-  const breadcrumb = (await getBreadcrumb(slug, 'page_header')) as BreadcrumbItem[] | undefined;
+  const breadcrumb = await getBreadcrumb(slug, 'page_header');
 
   let node
   try {
@@ -107,9 +106,7 @@ export default async function NodePage(props: NodePageProps) {
     <Header blocks={blocks?.header} menus={menu?.primary_menu} />
     <h1 className="mb-4 text-6xl font-black leading-tight text-center">{node.title ?? node.name}</h1>
     <Breadcrumb breadcrumb={breadcrumb} />
-
-    {
-      view && view.results && view.results.length > 0 ? (
+    {view ? (
         <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {view.results.map((row: any) => (
             <li key={row.id}>
@@ -124,8 +121,7 @@ export default async function NodePage(props: NodePageProps) {
           </main>
 
           <aside className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg">
-            {
-              blocks?.sidebar_second?.length &&
+            {blocks?.sidebar_second?.length &&
               blocks.sidebar_second.map((block: any) => (
                 <div key={block?.block_id}>
                   <Block block={block} />
