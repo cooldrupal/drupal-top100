@@ -30,15 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Organizations(props: ViewPageProps) {
   const searchParams = await props.searchParams
-  const page = parseInt(searchParams?.page?.toString() || '0', 10);
-  const nextPage = page + 1
-  const nextPageUrl = `/${slug}?page=${nextPage}`
-
-  const options = {
-    params: {
-      page: page
-    }
-  }
+  const page = parseInt(searchParams?.page?.toString() || '0');
+  const nextPageUrl = `/${slug}?page=${page + 1}`
+  const options = { params: { page: page } }
   const view = await drupal.getView("organizations--page_1", options)
 
   const blocks = await getBlocks(slug, ['header', 'footer_top'])
