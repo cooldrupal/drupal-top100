@@ -107,13 +107,13 @@ export default async function NodePage(props: NodePageProps) {
     <h1 className="mb-4 text-6xl font-black leading-tight text-center">{node.title ?? node.name}</h1>
     <Breadcrumb breadcrumb={breadcrumb} />
     {view ? (
-        <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {view.results.map((row: any) => (
-            <li key={row.id}>
-              <OrganizationTeaser node={row} />
-            </li>
-          ))}
-        </ul>
+      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {view.results.map((row: any) => (
+          <li key={row.id}>
+            <OrganizationTeaser node={row} />
+          </li>
+        ))}
+      </ul>
       ) : (
         <div className="flex flex-col md:flex-row gap-12">
           <main className="w-full md:w-2/3">
@@ -132,7 +132,6 @@ export default async function NodePage(props: NodePageProps) {
         </div>
       )
     }
-
     <Footer blocks={blocks.footer_top} />
     </>
   );

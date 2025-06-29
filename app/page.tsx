@@ -6,7 +6,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Drupal Top 100 sites",
-  description: "Drupal sites from drupal.org organizations",
+  description: "Drupal organizations from drupal.org",
 }
 
 export default async function Home() {
@@ -17,8 +17,7 @@ export default async function Home() {
     <>
     <Header blocks={blocks?.header} menus={menu?.primary_menu} />
     <main>
-      {
-        blocks?.content_top?.length &&
+      {blocks?.content_top?.length &&
         blocks.content_top.map((block: any) => (
           <div key={block?.block_id}>
             <Block block={block} />

@@ -49,14 +49,14 @@ export default async function Organizations(props: ViewPageProps) {
         <Breadcrumb breadcrumb={breadcrumb} />
         {!isEmpty(view.results) ? (
           <>
-            <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {view.results.map((row: any) => (
-                <li key={row.id}>
-                  <OrganizationTeaser node={row} />
-                </li>
-              ))}
-            </ul>
-            <PagerMore url={nextPageUrl} />
+          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {view.results.map((row: any) => (
+              <li key={row.id}>
+                <OrganizationTeaser node={row} />
+              </li>
+            ))}
+          </ul>
+          <PagerMore url={nextPageUrl} />
           </>
         ) : (
           <PagerMore url={`/${slug}`} text="Go to top" />
