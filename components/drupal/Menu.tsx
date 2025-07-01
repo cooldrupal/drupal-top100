@@ -20,20 +20,18 @@ export async function Menu({menu_id, container_class='', list_class='', item_cla
     <div className="w-full sm:w-auto sm:ml-auto">
       <nav className={`menu_${id}`}>
         <ul className={options?.list_class}>
-        {menu?.items?.map((item) => {
-          return (
-            <li key={item.id} className={options?.item_class}>
+          {menu?.items?.map((item) => {
+            return (<li key={item.id} className={options?.item_class}>
               <Link
                 href={item.url}
                 className={options?.link_class}
               >
                 {item.title}
               </Link>
-            </li>
-          )
-        })}
-      </ul>
-    </nav>
+            </li>)
+          })}
+        </ul>
+      </nav>
     </div>
   )
 }
