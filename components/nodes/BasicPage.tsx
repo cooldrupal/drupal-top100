@@ -1,4 +1,5 @@
 import type { DrupalNode } from "next-drupal"
+import { Field } from "@/components/drupal/Field"
 
 interface BasicPageProps {
   node: DrupalNode
@@ -7,12 +8,7 @@ interface BasicPageProps {
 export function BasicPage({ node, ...props }: BasicPageProps) {
   return (
     <article {...props}>
-      {node.body?.processed && (
-        <div
-          dangerouslySetInnerHTML={{ __html: node.body?.processed }}
-          className="mt-6 font-serif text-xl leading-loose prose"
-        />
-      )}
+      <Field name="body" node={node} />
     </article>
   )
 }

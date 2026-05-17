@@ -6,6 +6,10 @@ export function nodesMap(type?: string) {
       params: {
         include: "field_logo,field_countries,field_partner,field_partner.field_logo"
       },
+      collection: {
+        title: 'Organizations',
+        path: '/organizations',
+      }
     }
   } as Record<string, JsonApiParams>;
 

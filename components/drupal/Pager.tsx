@@ -8,7 +8,7 @@ interface PagerMoreProps {
 
 export function PagerFull({ links, page }: PagerMoreProps) {
   return (
-    <nav className="flex gap-2 justify-center mb-8 mt-4">
+    <nav role="navigation" aria-label="pagination" className="flex gap-2 justify-center mb-8 mt-4">
       <>
       {(links.first && links.prev) && (
         <Link href={links.first} title='Go to first page'>

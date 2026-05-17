@@ -1,138 +1,146 @@
 import { notFound } from "next/navigation"
 import type { Metadata, ResolvingMetadata } from "next"
 import { drupal } from "@/lib/drupal"
-import { getNode } from "@/lib/node"
 import { getBreadcrumb } from "@/lib/breadcrumb"
 import { getBlocks } from "@/lib/decoupled_kit"
+import { getMenus } from "@/lib/menu"
 import { Block } from "@/components/drupal/Block"
 import { Node, getNodeTypes } from "@/components/drupal/Node"
 import { Header } from "@/components/drupal/Header"
 import { Footer } from "@/components/drupal/Footer"
 import { Breadcrumb } from "@/components/drupal/Breadcrumb"
-import { OrganizationTeaser } from "@/components/nodes/OrganizationTeaser"
+import { entityInfo } from "@/lib/utils"
+import { getMetatag } from "@/lib/metatag"
+import { nodesMap } from "@/params/nodes"
+import { getEntityByPath } from "@/lib/entity"
+import { getCollection } from "@/lib/collection"
+import { Title } from '@/components/drupal/Title'
+
+type PageParams = {
+  slug: string[]
+}
+type PageProps = {
+  params: Promise<PageParams>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 export async function generateMetadata(
-  props: NodePageProps,
+  props: PageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const params = await props.params
-
   const { slug } = params
 
-  let node
-  try {
-    node = await getNode(slug)
-  } catch (e) {
-    // If we fail to fetch the node, don't return any metadata.
+  const entity = await getEntityByPath(slug)
+  if (!entity) {
     return {}
   }
 
-  return {
-    title: node.title ?? node.name,
+  const metatag = getMetatag(entity)
+  if (metatag) {
+    return metatag
   }
-}
 
-type NodePageParams = {
-  slug: string[]
-}
-type NodePageProps = {
-  params: Promise<NodePageParams>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  return {
+    title: entity.label,
+  }
 }
 
 const RESOURCE_TYPES = getNodeTypes()
 
-export async function generateStaticParams(): Promise<NodePageParams[]> {
+export async function generateStaticParams(): Promise<PageParams[]> {
   const resources = await drupal.getResourceCollectionPathSegments(
-    RESOURCE_TYPES,
-    {
-      // The pathPrefix will be removed from the returned path segments array.
-      // pathPrefix: "/blog",
-      // The list of locales to return.
-      // locales: ["en", "es"],
-      // The default locale.
-      // defaultLocale: "en",
-    }
+    RESOURCE_TYPES, {}
   )
 
   return resources.map((resource) => {
-    // resources is an array containing objects like: {
-    //   path: "/blog/some-category/a-blog-post",
-    //   type: "node--article",
-    //   locale: "en", // or `undefined` if no `locales` requested.
-    //   segments: ["blog", "some-category", "a-blog-post"],
-    // }
     return {
       slug: resource.segments
     }
   })
 }
 
-export default async function NodePage(props: NodePageProps) {
+export default async function NodePage(props: PageProps) {
   const params = await props.params
   const { slug } = params
 
-  const breadcrumb = await getBreadcrumb(slug, 'page_header');
-
-  let node
-  try {
-    node = await getNode(slug)
-  } catch (error) {
+  const entity = await getEntityByPath(slug)
+  if (!entity) {
     notFound()
   }
 
-  let view
-  const taxonomies = ['taxonomy_term--partner', 'taxonomy_term--countries']
-  if (taxonomies.includes(node.type)) {
+  const breadcrumb = await getBreadcrumb(slug, 'page_header')
+
+  let view,blocks
+  const entity_info = entityInfo(entity.type)
+  const is_taxonomy = entity_info.entity_type == 'taxonomy_term'
+  if (is_taxonomy) {
     const options = {
       params: {
-        'views-argument': [node.drupal_internal__tid]
+        'views-argument': [entity.drupal_internal__tid],
+        include: "field_logo"
       }
     }
-    view = await drupal.getView("taxonomy_term--page_1", options)
+    view = await getCollection('view', "taxonomy_term--page_1", options)
 
-    breadcrumb?.push({ text: 'Organizations', url: '/organizations' });
+    if (view?.results?.length) {
+      const node_options = nodesMap(view.results[0].type)
+      if (node_options) {
+        breadcrumb?.push({
+          text: node_options.collection.title,
+          url: node_options.collection.path,
+        })
+      }
+    }
+    blocks = await getBlocks(slug, ['header', 'footer_top'])
+  }
+  else {
+    blocks = await getBlocks(slug, ['sidebar_second', 'header', 'footer_top'],
+      ['block_content', 'views'], { 'current_id': entity.drupal_internal__nid }
+    )
   }
 
-  const blocks = await getBlocks(slug, ['sidebar_second', 'header', 'footer_top'],
-    ['block_content', 'views'], { 'current_id': node.drupal_internal__nid }
-  )
-  const menu = await getBlocks(slug, ['primary_menu'], ['system'])
-
-  breadcrumb?.push({ text: node.title ?? node.name, url: '' });
+  breadcrumb?.push({ text: entity.label, url: '' })
+  const menu = await getMenus(slug, ['primary_menu'])
 
   return (
     <>
     <Header blocks={blocks?.header} menus={menu?.primary_menu} />
-    <h1 className="mb-4 text-6xl font-black leading-tight text-center">{node.title ?? node.name}</h1>
+    <Title title={entity.label} />
     <Breadcrumb breadcrumb={breadcrumb} />
-    {view ? (
-      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {view.results.map((row: any) => (
+    {is_taxonomy ? (
+      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {view?.results.map((row: any) => (
           <li key={row.id}>
-            <OrganizationTeaser node={row} />
+            <Node node={row} view='teaser' />
           </li>
         ))}
       </ul>
-      ) : (
-        <div className="flex flex-col md:flex-row gap-12">
-          <main className="w-full md:w-2/3">
-            <Node node={node} />
-          </main>
+    ) : (
+      (() => {
+        const hasSidebar = (blocks?.sidebar_second as any[])?.some(
+          (block) => block?.results?.length > 0
+        ) ?? false;
+        return (
+          <div className={hasSidebar ? 'flex flex-col md:flex-row gap-12' : ''}>
+            <main className={hasSidebar ? 'w-full md:w-2/3' : 'w-full'}>
+              <Node node={entity} />
+            </main>
 
-          <aside className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg">
-            {blocks?.sidebar_second?.length &&
-              blocks.sidebar_second.map((block: any) => (
-                <div key={block?.block_id}>
-                  <Block block={block} />
-                </div>
-              ))
-            }
-          </aside>
-        </div>
-      )
-    }
+            {hasSidebar && (
+              <aside className="w-full md:w-1/3 bg-gray-100 p-4 rounded-lg">
+                {blocks.sidebar_second.map((block: any) => (
+                  <div key={block?.block_id}>
+                    <Block block={block} />
+                  </div>
+                ))}
+              </aside>
+            )}
+          </div>
+        )
+      })()
+    )}
     <Footer blocks={blocks.footer_top} />
     </>
-  );
+  )
 }

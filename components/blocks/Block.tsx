@@ -7,10 +7,10 @@ export function Block({ block }: any) {
   if (block.provider === 'block_content') {
     return (
       <div className="mb-6">
-        {options?.title && <h2 className="text-xl">{options.title}</h2>}
+        {options?.title && <h2 className="text-3xl">{options.title}</h2>}
         <div
           dangerouslySetInnerHTML={{ __html: block.body?.processed }}
-          className="mt-6 text-m leading-loose"
+          className="mt-6 text-lg font-light leading-loose"
         />
       </div>
     )
@@ -24,8 +24,8 @@ export function Block({ block }: any) {
 
     return (
       <>
-        <div className="mb-6">
-        {options?.title && <h2 className="text-xl pb-2 mb-2">{options?.title}</h2>}
+        <div className="my-8 p-6">
+        {options?.title && <h2 className="text-3xl pb-2 mb-2">{options?.title}</h2>}
         <ul>
           {rows.map((row: any, index: number) => (
             <li key={index}>

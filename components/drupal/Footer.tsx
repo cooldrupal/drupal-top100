@@ -23,8 +23,8 @@ export function Footer({ blocks, menus }: any) {
         ))
       }
       <section id="footer-bottom-last">
-        <div className="copyright text-center py-2 text-gray-400 bg-slate-800">
-          © {new Date().getFullYear()} Drupal Top 100, All rights reserved.
+          <div className="copyright text-center py-2 bg-gray-100 text-gray-600">
+            <span>© {new Date().getFullYear()} Drupal Top 100, All rights reserved.</span>
         </div>
       </section>
     </footer>

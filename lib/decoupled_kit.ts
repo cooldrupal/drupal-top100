@@ -11,38 +11,78 @@ export function getApiVersion() {
   return apiVersion
 }
 
-function getBlocksUrl(path: string | string[], regions: string[] = []) {
-  if (Array.isArray(path)) {
-    path = getPathFromSlug(path)
+export async function getBlocks(
+  path: string | string[],
+  regions: string[] = [],
+  providers: string[] = ['block_content', 'views'],
+  params: Record<string, any> | null = null,
+) {
+  const blocksList = await getBlocksList(path, regions, providers)
+  if (!blocksList) {
+    return null
   }
 
-  const drupalBase = process.env.NEXT_PUBLIC_DRUPAL_BASE_URL
-  const currentTheme = process.env.DECOUPLED_KIT_CURRENT_THEME
-  const apiVersion = getApiVersion()
+  const blocks = await Promise.all(
+    blocksList.map(async (block) => {
+      try {
+        if (block.provider === 'block_content') {
+          const blockResource = await drupal.getResource(block.type, block.uuid)
+          return {
+            ...blockResource,
+            region: block.region,
+            provider: block.provider,
+            block_id: block.label
+          }
+        }
+        else if (block.provider === 'views') {
+          if (!block.plugin.startsWith('views_block:')) {
+            return null
+          }
 
-  const apiUrl =
-    apiVersion === 1
-      ? (() => {
-        let url = `${drupalBase}/decoupled_kit/block?path=${path}&mode=link`
-        if (regions.length > 0) {
-          const regionParam = regions.join(',')
-          url += `&regions=${regionParam}`
-        }
-        return url;
-      })()
-      : (() => {
-        let url = `${drupalBase}/jsonapi/decoupled_kit/blocks?current_path=${path}`
-        if (regions.length > 0) {
-          const regionParam = regions.join(',')
-          url += `&selected_regions=${regionParam}`
-        }
-        if (currentTheme) {
-          url += `&current_theme=${currentTheme}`
-        }
-        return url
-      })();
+          const viewId = block.plugin.replace(/^views_block:/, "").replace("-", "--")
+          const options = blocksMap(viewId)
 
-  return apiUrl
+          if (params) {
+            if (Array.isArray(options.params['views-argument'])) {
+              options.params['views-argument'] = options.params['views-argument'].map(value => {
+                if (typeof value === 'string' && value.startsWith('***')) {
+                  const key = value.slice(3).toLowerCase()
+                  return params[key as keyof typeof params] ?? value
+                }
+                return value
+              })
+            }
+          }
+
+          const view = await drupal.getView(viewId, options)
+          return {
+            ...view,
+            region: block.region,
+            provider: block.provider,
+            block_id: viewId
+          }
+        }
+        else {
+          return {
+            ...block.settings,
+            region: block.region,
+            provider: block.provider,
+            block_id: block.label
+          }
+        }
+      }
+      catch (error) {
+        console.error(`Error getting block "${block.label}" ID ${block.uuid}:`, error)
+        return null
+      }
+    })
+  )
+
+  if (!blocks) {
+    return null
+  }
+
+  return groupByRegion(blocks)
 }
 
 async function getBlocksList(path: string | string[], regions: string[], providers: string[]) {
@@ -53,13 +93,13 @@ async function getBlocksList(path: string | string[], regions: string[], provide
     const res = await drupal.fetch(apiUrl)
 
     if (!res.ok) {
-      console.error(`Empty fetched applications "${apiUrl}"`);
+      console.error(`Empty fetched applications "${apiUrl}"`)
       return null
     }
-    blocksList = await res.json();
+    blocksList = await res.json()
   }
   catch (error) {
-    console.error(`Error getting API "${apiUrl}"`, error);
+    console.error(`Error getting API "${apiUrl}"`, error)
     return null
   }
 
@@ -79,7 +119,7 @@ async function getBlocksList(path: string | string[], regions: string[], provide
   if (apiVersion === 1) {
     const blocks = filteredBlocks
       .map((block: any) => {
-        const [typePart, uuid] = block.plugin.split(':');
+        const [typePart, uuid] = block.plugin.split(':')
         const type = block.bundle ? `${block.settings.provider}--${block.bundle}` : block.settings.provider
 
         return {
@@ -124,8 +164,8 @@ async function getBlocksList(path: string | string[], regions: string[], provide
           plugin: block.attributes.plugin,
           provider: block.attributes.settings.provider,
           settings: block.attributes.settings,
-        };
-      });
+        }
+      })
 
     return blocks
   }
@@ -133,83 +173,84 @@ async function getBlocksList(path: string | string[], regions: string[], provide
   return null
 }
 
-export async function getBlocks(
-  path: string | string[],
-  regions: string[] = [],
-  providers: string[] = ['block_content', 'views'],
-  params: Record<string, any> | null = null,
-) {
-  const blocksList = await getBlocksList(path, regions, providers)
-  if (!blocksList) {
-    return null
-  }
+function getBlocksUrl(path: string | string[], regions: string[] = []) {
+  path = getPathFromSlug(path)
 
-  const blocks = await Promise.all(
-    blocksList.map(async (block) => {
-      try {
-        if (block.provider === 'block_content') {
-          const blockResource = await drupal.getResource(block.type, block.uuid)
-          return {
-            ...blockResource,
-            region: block.region,
-            provider: block.provider,
-            block_id: block.label
-          }
+  const drupalBase = process.env.NEXT_PUBLIC_DRUPAL_BASE_URL
+  const currentTheme = process.env.DECOUPLED_KIT_CURRENT_THEME
+  const apiVersion = getApiVersion()
+
+  const apiUrl =
+    apiVersion === 1
+      ? (() => {
+        let url = `${drupalBase}/decoupled_kit/block?path=${path}&mode=link`
+        if (regions.length > 0) {
+          const regionParam = regions.join(',')
+          url += `&regions=${regionParam}`
         }
-        else if (block.provider === 'views') {
-          const viewId = block.plugin.replace(/^views_block:/, "").replace("-", "--")
-          const options = blocksMap(viewId)
-
-          if (params) {
-            if (Array.isArray(options.params['views-argument'])) {
-              options.params['views-argument'] = options.params['views-argument'].map(value => {
-                if (typeof value === 'string' && value.startsWith('***')) {
-                  const key = value.slice(3).toLowerCase();
-                  return params[key as keyof typeof params] ?? value;
-                }
-                return value;
-              });
-            }
-          }
-
-          const view = await drupal.getView(viewId, options)
-          return {
-            ...view,
-            region: block.region,
-            provider: block.provider,
-            block_id: viewId
-          }
+        return url
+      })()
+      : (() => {
+        let url = `${drupalBase}/jsonapi/decoupled_kit/blocks?current_path=${path}`
+        if (regions.length > 0) {
+          const regionParam = regions.join(',')
+          url += `&selected_regions=${regionParam}`
         }
-        else {
-          return {
-            ...block.settings,
-            region: block.region,
-            provider: block.provider,
-            block_id: block.label
-          }
+        if (currentTheme) {
+          url += `&current_theme=${currentTheme}`
         }
-      }
-      catch (error) {
-        console.error(`Error getting block "${block.label}" ID ${block.uuid}:`, error)
-        return null
-      }
-    })
-  );
+        return url
+      })()
 
-  if (!blocks) {
-    return null
-  }
-
-  return groupByRegion(blocks)
+  return apiUrl
 }
 
 function groupByRegion(items: any) {
   return items.reduce((acc: any, item: any) => {
-    const region = item.region;
-    if (!acc[region]) {
-      acc[region] = [];
+    if (!item) {
+      return acc
     }
-    acc[region].push(item);
-    return acc;
-  }, {} as Record<string, typeof items>);
+    const region = item.region
+    if (!acc[region]) {
+      acc[region] = []
+    }
+    acc[region].push(item)
+    return acc
+  }, {} as Record<string, typeof items>)
+}
+
+function getRedirectsUrl(path: string | string[]) {
+  path = getPathFromSlug(path)
+
+  const drupalBase = process.env.NEXT_PUBLIC_DRUPAL_BASE_URL
+  const apiVersion = getApiVersion()
+
+  const apiUrl = apiVersion === 1
+    ? `${drupalBase}/decoupled_kit/redirect?path=${path}`
+    : `${drupalBase}/jsonapi/decoupled_kit/redirect?current_path=${path}`
+
+  return apiUrl
+}
+
+export async function getRedirect(path: string | string[]) {
+  path = getPathFromSlug(path)
+
+  const apiUrl = getRedirectsUrl(path)
+
+  let data = null
+  try {
+    const res = await drupal.fetch(apiUrl)
+
+    if (!res.ok) {
+      console.error(`Empty fetched applications "${apiUrl}"`)
+      return null
+    }
+    data = await res.json()
+  }
+  catch (error) {
+    console.error(`Error getting API "${apiUrl}"`, error)
+    return null
+  }
+
+  return data
 }

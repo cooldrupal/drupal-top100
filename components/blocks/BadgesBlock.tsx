@@ -14,8 +14,8 @@ export function BadgesBlock({ block }: any) {
 
     return (
       <>
-        <div className="mb-6">
-        {options?.title && <h2 className="text-xl pb-2 mb-2">{options?.title}</h2>}
+        <div className="p-6 my-8 bg-gray-100 rounded-lg">
+        {options?.title && <h2 className="text-3xl pb-2 mb-2">{options?.title}</h2>}
         <ul className="w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
           {rows.map((row: any, index: number) => (
             <li key={index}>

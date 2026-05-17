@@ -29,6 +29,7 @@ export function blocksMap(id?: string) {
       next: {
         revalidate: 3600,
       },
+      title: 'Organizations',
       component: 'PremiumOrganizationsBlock',
     },
     'countries--block_1': {

@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+article a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+article a:hover {
+  color: #1e40af;
+}
+
+#nprogress .bar {
+  background: #2563eb !important;
+  height: 3px;
+}
